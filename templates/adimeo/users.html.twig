@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Tous les utilisateurs {% endblock %}
+
+{% block body %}
+
+
+<div class="container">
+    <h1> Liste des utilisateurs </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Statut</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td> {{ user.nom|e }} </td>
+                    <td> {{ user.prenom|e }}</td>
+                    <td>  {{  user.done ? "✅" : '❌' }} </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+{% endblock %}

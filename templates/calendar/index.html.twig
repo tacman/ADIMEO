@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CalendarController!{% endblock %}
+
+{% block body %}
+    <h1> Calendrier de l'avent </h1>
+
+    <a role="button" href="{{ path('open') }}"> Open </a>
+    <main class="calendar">
+            {% for day in days %}
+                <article>
+                    {{ day.open ? "✅" : "❌" }}
+                    {{ day.number }}
+                </article>
+            {% endfor %}
+    </main>
+{% endblock %}
