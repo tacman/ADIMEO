@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ nasa.title }} {% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+    <h1> {{ nasa.title }} </h1>
+
+    <div>
+        <p> {{ nasa.description }} </p>
+    </div>
+
+    <div>
+        <img src={{ image }} alt="{{ nasa.title }}" />
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Index Nasa {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h1> Liste des images de la Nasa </h1>
+
+    <div>
+        {% for nasa in data %}
+            <p> <a href="{{ path('nasa_show', {'id': nasa.id }) }}" target="_blank"> {{ nasa.title }} </a></p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
