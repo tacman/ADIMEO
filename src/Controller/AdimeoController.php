@@ -67,8 +67,9 @@ class AdimeoController extends AbstractController
 
         //return $this->redirectToRoute( 'nasa_show', ["id" => $nasa] );
     }
+    
 
-    #[Route('/addNasa', name: 'nasa', methods:['GET']) ]
+    #[Route('/addNasa', name: 'add_nasa', methods:['GET']) ]
     public function nasa(): Response
     {
         $apiKey = $this->getParameter('app.api_key_nasa');
@@ -94,7 +95,7 @@ class AdimeoController extends AbstractController
         return $this->redirectToRoute( 'nasa_show', ["id" => $nasa] );
     }
 
-    #[Route('/nasa/{id}', name: 'nasa_show', methods:['GET']) ]
+    #[Route('/nasa/{id}', name: 'nasa_show_id', methods:['GET']) ]
     public function showNasa(Nasa $nasa, NasaRepository $nasaRepository): Response
     {
         if ($nasa === null) {

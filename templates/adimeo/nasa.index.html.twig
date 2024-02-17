@@ -9,7 +9,7 @@
 
     <div>
         {% for nasa in data %}
-            <p> <a href="{{ path('nasa_show', {'id': nasa.id }) }}" target="_blank"> {{ nasa.title }} </a></p>
+            <p> {{ nasa.dateTime|date('Y-m-d') }}  <a href="{{ path('nasa_show_id', {'id': nasa.id }) }}" target="_blank"> {{ nasa.title }} </a></p>
         {% endfor %}
     </div>
 </div>

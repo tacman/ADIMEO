@@ -25,6 +25,10 @@ services:
     app.cron.task:
         class: App\Service\UserService
         arguments: ['@doctrine.orm.entity_manager']
+    
+    app.cron.nasa:
+        class: App\Service\NasaService
+        arguments: ['@doctrine.orm.entity_manager']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
