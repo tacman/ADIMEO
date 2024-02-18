@@ -14,16 +14,20 @@ class NasaService
 {
     private $entityManager;
     private $client;
+    private $customParam;
 
-    public function __construct(EntityManagerInterface $entityManager, HttpClientInterface $client,){
+    public function __construct(string $customParam, EntityManagerInterface $entityManager, HttpClientInterface $client){
         $this->entityManager = $entityManager;
         $this->client = $client;
+        $this->customParam= $customParam ;
     }
     
     // tâche crône ['app:cron:get-image-nasa-current-day']
     public function getImageNasaCurrentDay(): Nasa
     {
-        $apiKey = $this->getParameter('app.api_key_nasa');
+        $apiKey = $this->customParam;
+
+        dd($apiKey) ;
 
         $data = $this->client->request(
             'GET', 

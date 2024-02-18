@@ -118,6 +118,30 @@ class AdimeoController extends AbstractController
         ]);
     }
 
-    
+    // Se lance avec la Command 
+    // app:cron:get-image-nasa-current-day
+    #[Route('/nasa', name: 'nasa_show', methods:['GET']) ]
+    public function showNasaCommand(): Response
+    {
+
+        if ($nasa === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $image =  $nasa->getImage() ;
+
+        if ( empty( $nasa->getImage() ) ) {
+            $id_current = $nasa->getId() ;
+            $lastInd = (int) ( $id_current - 1 ) ;
+
+            $lastNasa   = $nasaRepository->find($lastInd) ;
+            $image = $lastNasa->getImage() ;
+        }
+
+        return $this->render('adimeo/nasa.jour.html.twig',[
+            'nasa'  => $nasa,
+            'image' => $image
+        ]);
+    }
 
 }

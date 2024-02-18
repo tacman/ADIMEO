@@ -37,11 +37,6 @@ class UpdateStatusUserDataCommand extends Command
 
     protected function configure(): void
     {
-        // $this
-        //     ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-        //     ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        // ;
-
         $this->setHelp('Cette Command met à jour le status des utilisateurs.') ; // the command help shown when running the command with the "--help" option
         $this->setDescription('Cette Command met à jour le status des utilisateurs.') ;
     }
