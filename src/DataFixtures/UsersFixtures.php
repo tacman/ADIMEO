@@ -44,23 +44,23 @@ class UsersFixtures extends Fixture implements FixtureGroupInterface
         $manager->persist($admin); 
 
         // All users
-        // for ( $i=1; $i < 15; $i++ ) { 
-        //     $user = new User();
+        for ( $i=1; $i < 15; $i++ ) { 
+            $user = new User();
 
-        //     $user
-        //         ->setNom( $this->faker->lastName() )
-        //         ->setPrenom( $this->faker->firstName() )
-        //         ->setPhone( $this->faker->phoneNumber() )
-        //         ->setEmail( $this->faker->unique()->email() )
-        //         ->setDone(mt_rand(0, 1))
-        //         ->setRoles(['ROLE_USER'])
-        //         ->setPassword(
-        //             $this->hasher->hashPassword( $user, "azerty" )
-        //         )
-        //     ;
+            $user
+                ->setNom( $this->faker->lastName() )
+                ->setPrenom( $this->faker->firstName() )
+                ->setPhone( $this->faker->phoneNumber() )
+                ->setEmail( $this->faker->unique()->email() )
+                ->setDone(mt_rand(0, 1))
+                ->setRoles(['ROLE_USER'])
+                ->setPassword(
+                    $this->hasher->hashPassword( $user, "azerty" )
+                )
+            ;
 
-        //     $manager->persist($user); 
-        // }
+            $manager->persist($user); 
+        }
 
         $manager->flush();
     }
