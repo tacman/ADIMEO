@@ -22,6 +22,9 @@ class CalendarController extends AbstractController
         ]);
     }
 
+    // Mise en place de la fonction CRON
+    // Ajout de l'image courante toutes les 5s
+    // symfony console messenger:consume scheduler_calendar
     #[Route('/open', name: 'open')]
     public function open(MessageBusInterface $bus): Response
     {

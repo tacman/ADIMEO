@@ -147,13 +147,16 @@ class AdimeoController extends AbstractController
         ]);
     }
 
+    // Mise en place de la fonction CRON
+    // Ajout de l'image courante toutes les 5s
+    // symfony console messenger:consume scheduler_nasa
     #[Route('/addImage', name: 'add_image', methods:['GET']) ]
-        public function nasaImage(MessageBusInterface $bus): Response
-        {
-            // will cause the SmsNotificationHandler to be called
-            $bus->dispatch( new AddImageNasaMessage() );
+    public function nasaImage(MessageBusInterface $bus): Response
+    {
+        // will cause the SmsNotificationHandler to be called
+        $bus->dispatch( new AddImageNasaMessage() );
 
-            return $this->redirectToRoute( 'app_home');
-        }
+        return $this->redirectToRoute( 'app_home');
+    }
     
 }
