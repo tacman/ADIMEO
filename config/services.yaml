@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    app.api_key_nasa: '%env(API_KEY_NASA)%'
+    app.api_key_nasa: '%env(resolve:API_KEY_NASA)%'
 
 services:
     # default configuration for services in *this* file
@@ -14,7 +14,7 @@ services:
         public: true
         bind:
             # it works with scalar types too (string, int, array, etc.)
-            string $customParam: '%app.api_key_nasa%'
+            'string $api_Key_nasa': '%app.api_key_nasa%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -32,7 +32,5 @@ services:
     app.cron.nasa:
         class: App\Service\NasaService
         arguments: 
-            $customParam: '%app.api_key_nasa%'
+            $api_Key_nasa: '%app.api_key_nasa%'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones

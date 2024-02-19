@@ -1,29 +1,22 @@
 <?php
 
-namespace App\Service;
+namespace App\MessageHandler;
 
-use DateTime;
 use App\Entity\Nasa;
-use App\Entity\User;
+use App\Repository\NasaRepository;
+use App\Message\AddImageNasaMessage;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-
-class NasaService
+#[AsMessageHandler]
+final class AddImageNasaMessageHandler
 {
-    private $entityManager;
-    private $client;
-    private $api_Key_nasa;
-
-    public function __construct(string $api_Key_nasa, EntityManagerInterface $entityManager, HttpClientInterface $client){
-        $this->entityManager = $entityManager;
-        $this->client = $client;
-        $this->api_Key_nasa= $api_Key_nasa ;
+    public function __construct( private string $api_Key_nasa, private NasaRepository $nasaRepository, private EntityManagerInterface $manager, private HttpClientInterface $client)
+    {
     }
     
-    // tâche crône ['app:cron:get-image-nasa-current-day']
-    public function getImageNasaCurrentDay(): Nasa
+    public function __invoke(AddImageNasaMessage $message)
     {
         $api_Key_nasa = $this->api_Key_nasa;
 
@@ -44,13 +37,8 @@ class NasaService
             ->setImage( $data['url'] )
         ;
 
-        $this->entityManager->persist($nasa) ;
-        $this->entityManager->flush() ;
+        $this->manager->persist($nasa) ;
+        $this->manager->flush() ;
 
-        return $nasa ;
     }
-
-
-   
-
 }

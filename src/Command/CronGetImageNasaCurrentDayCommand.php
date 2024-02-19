@@ -58,8 +58,8 @@ class CronGetImageNasaCurrentDayCommand extends Command
         $nasa = $serviceNasa->getImageNasaCurrentDay() ; 
         
         $this->logger->info( "Récupèration de l'image ", [ 'nasa' => $nasa->getTitle() ] ) ;
-
-        $output->writeln($nasa) ;
+        
+        $output->writeln( $nasa->getTitle() ) ;
 
         $io->success('trigger user without update status');
 

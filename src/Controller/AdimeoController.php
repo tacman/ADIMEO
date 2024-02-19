@@ -6,9 +6,13 @@ use App\Entity\Nasa;
 use App\Entity\User;
 use App\Repository\NasaRepository;
 use App\Repository\UserRepository;
+use App\Message\AddImageNasaMessage;
+use App\Message\AddImageCurrentDayNasa;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Message\AddImageCurrentDayNasaMessage;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -68,7 +72,6 @@ class AdimeoController extends AbstractController
         //return $this->redirectToRoute( 'nasa_show', ["id" => $nasa] );
     }
     
-
     #[Route('/addNasa', name: 'add_nasa', methods:['GET']) ]
     public function nasa(): Response
     {
@@ -144,4 +147,13 @@ class AdimeoController extends AbstractController
         ]);
     }
 
+    #[Route('/addImage', name: 'add_image', methods:['GET']) ]
+        public function nasaImage(MessageBusInterface $bus): Response
+        {
+            // will cause the SmsNotificationHandler to be called
+            $bus->dispatch( new AddImageNasaMessage() );
+
+            return $this->redirectToRoute( 'app_home');
+        }
+    
 }
