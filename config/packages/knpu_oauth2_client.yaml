@@ -6,7 +6,8 @@ knpu_oauth2_client:
             client_id: '%env(resolve:GOOGLE_CLIENT_ID_GOOGLE)%'
             client_secret: '%env(resolve:GOOGLE_CLIENT_SECRET_GOOGLE)%'
             redirect_route: connect_google_check
-            redirect_params: {}
+            redirect_params: 
+                service: google
         github:
             type: github
             client_id: '%env(resolve:GITHUB_CLIENT_ID)%'

@@ -14,9 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+#[IsGranted("ROLE_USER")]
 class AdimeoController extends AbstractController
 {
     private $entityManager;
@@ -52,7 +54,7 @@ class AdimeoController extends AbstractController
         
         for ( $i=0; $i < count($data) ; $i++ ) { 
 
-            $date = new  \DateTime($data[$i]['date']) ;
+            $date = new \DateTime($data[$i]['date']) ;
             $date->format('Y-m-d');
 
             $nasa = ( new Nasa() )
