@@ -14,24 +14,20 @@ use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 
 class OAuth2RegistrationService
 {
-    private $entityManager ;
-    private $userRepository ;
-
-    public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository){
-        $this->entityManager  = $entityManager;
-        $this->userRepository = $userRepository;
+    public function __construct(
+        private EntityManagerInterface $entityManager, 
+        private UserRepository $userRepository
+    ){
     }
 
     /**
      * 
      * @param GoogleUser|GithubResourceOwner|FacebookUser $resourceOwner
      * 
-     * @return User
      */
     public function saveUser(ResourceOwnerInterface $resourceOwner): User
     {
-        dd("Inscription") ;
-
+        dd('dd');
         $user = match (true){
 
             $resourceOwner instanceof GoogleUser => ( new User() )
@@ -58,8 +54,7 @@ class OAuth2RegistrationService
         } ;
      
         $this->userRepository->save($user, flush: true);
-        
-        dd($user) ;
+   
         return $user ;
     }
 

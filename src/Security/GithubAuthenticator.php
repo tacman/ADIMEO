@@ -20,11 +20,17 @@ class GithubAuthenticator extends AbstractOAuth2Authenticator
 {
     protected string $serviceName = "github" ;
 
+    protected $clientRegistry ;
+    protected $userRepository ;
+     
+
     public function __construct(
-        private readonly ClientRegistry $clientRegistry ,
-        private readonly UserRepository $userRepository
-    )
-    {}
+        ClientRegistry $clientRegistry ,
+        UserRepository $userRepository )
+    {
+        $this->clientRegistry = $clientRegistry ;
+        $this->userRepository = $userRepository ;
+    }
 
     protected function getClient(): OAuth2ClientInterface
     {

@@ -4,6 +4,7 @@ namespace App\Security;
 
 use App\Entity\User; 
 use App\Repository\UserRepository;
+use App\Service\MessageGeneratorService;
 use App\Service\OAuth2RegistrationService;
 use League\OAuth2\Client\Token\AccessToken;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -31,14 +32,29 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
     use TargetPathTrait;
     
     protected string $serviceName = "";
+    protected $clientRegistry ;
+    protected $router ;
+    protected $userRepository ;
+    protected $oAuth2RegistrationService ;
+    protected $testService ;
 
     public function __construct(
-            private readonly ClientRegistry $clientRegistry,
-            private readonly RouterInterface $router,
-            private readonly UserRepository $userRepository ,
-            private readonly OAuth2RegistrationService $oAuth2RegistrationService
+            ClientRegistry $clientRegistry,
+            RouterInterface $router,
+            UserRepository $userRepository ,
+            OAuth2RegistrationService $oAuth2RegistrationService,
+            MessageGeneratorService $testService
         )
-    {}
+    {
+        $this->clientRegistry = $clientRegistry ;
+        $this->router = $router ;
+        $this->userRepository = $userRepository ;
+        $this->oAuth2RegistrationService = $oAuth2RegistrationService ;
+        $this->testService = $testService ;
+    }
+
+    abstract protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner): ?User ;
+    abstract protected function getClient(): OAuth2ClientInterface ;
 
     
     /**
@@ -108,15 +124,15 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
         $accessToken = $this->fetchAccessToken( $this->getClient() );
         $resourceOwnerProvider = $this->getResourceOwnerFromAccessToken($accessToken) ;
       
-        // dd($resourceOwnerProvider) ;
+       // dd($resourceOwnerProvider) ;
         $user = $this->getUserFromRessourceProvider($resourceOwnerProvider) ; // google, github, facebook
-
-        //dd($user) ;
-
+        
         if( null === $user){
-            $this->oAuth2RegistrationService->saveUser( $resourceOwnerProvider );
+            // $user = $this->oAuth2RegistrationService->saveUser($resourceOwnerProvider);
+            $toto = $this->testService->getHappyMessage() ;
+            dd('dd');
         }
-       
+        dd('dd');
         return new SelfValidatingPassport(
             userBadge:  new UserBadge( $user->getUserIdentifier(), fn () => $user)  ,
             badges : [
@@ -125,8 +141,7 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
         );
     }
 
-    abstract protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner): ?User ;
-    abstract protected function getClient(): OAuth2ClientInterface ;
+
 
    
 

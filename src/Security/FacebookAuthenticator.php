@@ -19,12 +19,18 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 class FacebookAuthenticator extends AbstractOAuth2Authenticator
 {   
     protected string $serviceName = "facebook" ;
+    protected $clientRegistry ;
+    protected $userRepository ;
+     
 
     public function __construct(
-        private readonly ClientRegistry $clientRegistry ,
-        private readonly UserRepository $userRepository
+        ClientRegistry $clientRegistry ,
+        UserRepository $userRepository
     )
-    {}
+    {
+        $this->clientRegistry = $clientRegistry ;
+        $this->userRepository = $userRepository ;      
+    }
 
     protected function getClient(): OAuth2ClientInterface
     {
@@ -36,9 +42,8 @@ class FacebookAuthenticator extends AbstractOAuth2Authenticator
      * et renvoie un user, 
      * 
      * @param ResourceOwnerInterface $resourceOwner
-     * @param UserRepository $userRepository
      * 
-     * @return User
+     * @return ?User
      */
     protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner): ?User
     {
@@ -46,14 +51,10 @@ class FacebookAuthenticator extends AbstractOAuth2Authenticator
             throw new \RuntimeException("expecting github user", 1);
         }
 
-        dd($resourceOwner);
-
         $existingUser = $this->userRepository->findOneBy([
             'fbId' => $resourceOwner->getId() ,
             'email'    => $resourceOwner->getEmail()
         ]);
-
-        dd("existingUser") ;
 
         return $existingUser ;
     }
