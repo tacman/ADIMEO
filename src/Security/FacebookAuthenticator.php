@@ -19,18 +19,6 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 class FacebookAuthenticator extends AbstractOAuth2Authenticator
 {   
     protected string $serviceName = "facebook" ;
-    protected $clientRegistry ;
-    protected $userRepository ;
-     
-
-    public function __construct(
-        ClientRegistry $clientRegistry ,
-        UserRepository $userRepository
-    )
-    {
-        $this->clientRegistry = $clientRegistry ;
-        $this->userRepository = $userRepository ;      
-    }
 
     protected function getClient(): OAuth2ClientInterface
     {

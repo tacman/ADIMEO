@@ -32,25 +32,16 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
     use TargetPathTrait;
     
     protected string $serviceName = "";
-    protected $clientRegistry ;
-    protected $router ;
-    protected $userRepository ;
-    protected $oAuth2RegistrationService ;
-    protected $testService ;
 
     public function __construct(
-            ClientRegistry $clientRegistry,
-            RouterInterface $router,
-            UserRepository $userRepository ,
-            OAuth2RegistrationService $oAuth2RegistrationService,
-            MessageGeneratorService $testService
-        )
+        protected ClientRegistry $clientRegistry ,
+        protected RouterInterface  $router,
+        protected UserRepository  $userRepository ,
+        protected OAuth2RegistrationService $oAuth2RegistrationService,
+        protected MessageGeneratorService $testService
+    )
     {
-        $this->clientRegistry = $clientRegistry ;
-        $this->router = $router ;
-        $this->userRepository = $userRepository ;
-        $this->oAuth2RegistrationService = $oAuth2RegistrationService ;
-        $this->testService = $testService ;
+       
     }
 
     abstract protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner): ?User ;
@@ -126,11 +117,11 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
       
        // dd($resourceOwnerProvider) ;
         $user = $this->getUserFromRessourceProvider($resourceOwnerProvider) ; // google, github, facebook
-        
+   
         if( null === $user){
             // $user = $this->oAuth2RegistrationService->saveUser($resourceOwnerProvider);
             $toto = $this->testService->getHappyMessage() ;
-            dd('dd');
+            dd($toto);
         }
         dd('dd');
         return new SelfValidatingPassport(
