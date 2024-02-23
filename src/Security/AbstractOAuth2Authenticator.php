@@ -115,13 +115,12 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
         $accessToken = $this->fetchAccessToken( $this->getClient() );
         $resourceOwnerProvider = $this->getResourceOwnerFromAccessToken($accessToken) ;
       
-       // dd($resourceOwnerProvider) ;
+        //dd($resourceOwnerProvider) ;
         $user = $this->getUserFromRessourceProvider($resourceOwnerProvider) ; // google, github, facebook
    
         if( null === $user){
-            // $user = $this->oAuth2RegistrationService->saveUser($resourceOwnerProvider);
-            $toto = $this->testService->getHappyMessage() ;
-            dd($toto);
+            $user = $this->oAuth2RegistrationService->saveUser($resourceOwnerProvider);
+            dd($user);
         }
         dd('dd');
         return new SelfValidatingPassport(

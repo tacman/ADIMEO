@@ -27,10 +27,13 @@ class OAuth2RegistrationService
      */
     public function saveUser(ResourceOwnerInterface $resourceOwner): User
     {
-        dd('dd');
+        dd($resourceOwner->getId()) ;
+
         $user = match (true){
 
             $resourceOwner instanceof GoogleUser => ( new User() )
+                ->setNom( $resourceOwner->getEmail() )
+                ->setPrenom( $resourceOwner->getEmail() )
                 ->setEmail( $resourceOwner->getEmail() )
                 ->setGoogleId( $resourceOwner->getId() )
                 ->setDone(true)
@@ -45,6 +48,8 @@ class OAuth2RegistrationService
                 ->setUpdatedAt(new \DateTimeImmutable() )
                 ->setRoles(['ROLE_USER']) ,
             $resourceOwner instanceof FacebookUser => ( new User() )
+                ->setNom( $resourceOwner->getLastName() )
+                ->setPrenom( $resourceOwner->getFirstName() )
                 ->setEmail( $resourceOwner->getEmail() )
                 ->setFbId( $resourceOwner->getId() )
                 ->setDone(true)
@@ -54,7 +59,8 @@ class OAuth2RegistrationService
         } ;
      
         $this->userRepository->save($user, flush: true);
-   
+        
+        dd($user) ;
         return $user ;
     }
 
