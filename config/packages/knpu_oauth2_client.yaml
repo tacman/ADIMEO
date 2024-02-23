@@ -5,20 +5,21 @@ knpu_oauth2_client:
             type: google
             client_id: '%env(resolve:GOOGLE_CLIENT_ID_GOOGLE)%'
             client_secret: '%env(resolve:GOOGLE_CLIENT_SECRET_GOOGLE)%'
-            redirect_route: connect_check
+            redirect_route: auth_oauth_check
             redirect_params: 
                 service: google
         github:
             type: github
             client_id: '%env(resolve:GITHUB_CLIENT_ID)%'
             client_secret: '%env(resolve:GITHUB_CLIENT_SECRET)%'
-            redirect_route: connect_check
-            redirect_params: {}
+            redirect_route: auth_oauth_check
+            redirect_params: 
+                service: github
         facebook:
             type: facebook
             client_id: '%env(resolve:FB_CLIENT_ID)%'
             client_secret: '%env(resolve:FB_CLIENT_SECRET)%'
-            redirect_route: connect_check 
-            redirect_params: {}
-            graph_api_version: 'v2.10'
-            ##redirect_route
+            redirect_route: auth_oauth_check 
+            redirect_params: 
+                service: facebook
+            graph_api_version: v2.12

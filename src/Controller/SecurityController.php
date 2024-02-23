@@ -16,12 +16,12 @@ class SecurityController extends AbstractController
 {
     public const SCOPES = [
         'google' => [],
-        'github' => ['user:email'],
-        'facebook' => [],
+        'github' => [],
+        'facebook' => ['public_profile', 'email'],
     ];
 
 
-    #[Route(path: '/login', name: 'app_login',  methods:['GET'])]
+    #[Route(path: '/login', name: 'app_login',  methods:['GET','POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ( $this->getUser() ) {
@@ -43,7 +43,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/oauth/connect/service/{service}', name: 'app_oauth_login',  methods:['GET'])]
-    public function connect(string $service, ClientRegistry $clientRegistry): RedirectResponse
+    public function connect(Request $request, string $service, ClientRegistry $clientRegistry): RedirectResponse
     {
         if ( !in_array($service, array_keys(self::SCOPES), TRUE) )
         {
@@ -56,12 +56,25 @@ class SecurityController extends AbstractController
             ->redirect( self::SCOPES[$service], []) ;  // 'public_profile', 'email' ,  the scopes you want to access
     }
 
-    #[Route('/connexion/service/check', name: 'connect_check',  methods:['GET', 'POST'])]
-    public function connectCheckAction(): Response
+    #[Route('/oauth/check/{service}', name: 'auth_oauth_check',  methods:['GET','POST'])]
+    public function connectCheckAction( Request $request, ClientRegistry $clientRegistry): Response
     {
+        dd("auth_oauth_check") ;
+        dd( $request->get('service'));
+        $service =  $request->attributes->all()['service'];
        
-            return $this->redirectToRoute('app_home') ;
-    
+        if ( !in_array($service, array_keys(self::SCOPES), TRUE) )
+        {
+            throw $this->createNotFoundException() ;
+        }
+
+        $client = $clientRegistry->getClient($service);
+        
+        if( !$client ) {
+            return new JsonResponse( array('status' => false, 'message' => "User not found !"));
+        }else{
+            return $this->redirectToRoute('app_home');
+        }
     }
 
 }

@@ -4,7 +4,6 @@ namespace App\Security;
 
 use App\Entity\User; 
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Service\OAuth2RegistrationService;
 use League\OAuth2\Client\Token\AccessToken;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -35,25 +34,17 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
 
     public function __construct(
             private readonly ClientRegistry $clientRegistry,
-            private readonly EntityManagerInterface $entityManager,
             private readonly RouterInterface $router,
             private readonly UserRepository $userRepository ,
             private readonly OAuth2RegistrationService $oAuth2RegistrationService
         )
     {}
 
-
-    abstract protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner, UserRepository $userRepository): ?User ;
-
-    public function getClient(): OAuth2ClientInterface
-    {
-        return $this->clientRegistry->getClient('google') ;
-    }
-
+    
     /**
      * Cette fonction indique si l'authentificateur prend en charge la requête donnée
      * Elle doit renvoyer une valeur booléenne
-     *  @param Request $request
+     * @param Request $request
      */
     public function supports(Request $request): ?bool
     {
@@ -65,7 +56,7 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
 
     /**
      * Cette fonction est appelée lorsque l'authentification a été exécutée avec succès.
-     * Il doit renvoyer un objet Response ou null.
+     * Elle doit renvoyer un objet Response ou null.
      *
      * @param Request $request
      * @param TokenInterface $token
@@ -116,9 +107,13 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
     {
         $accessToken = $this->fetchAccessToken( $this->getClient() );
         $resourceOwnerProvider = $this->getResourceOwnerFromAccessToken($accessToken) ;
-        $user        = $this->getUserFromRessourceProvider($resourceOwnerProvider, $this->userRepository) ; // google, github, facebook
+      
+        // dd($resourceOwnerProvider) ;
+        $user = $this->getUserFromRessourceProvider($resourceOwnerProvider) ; // google, github, facebook
 
-       if( null == $user){
+        //dd($user) ;
+
+        if( null === $user){
             $this->oAuth2RegistrationService->saveUser( $resourceOwnerProvider );
         }
        
@@ -128,8 +123,10 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
                 new RememberMeBadge()
             ]
         );
-
     }
+
+    abstract protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner): ?User ;
+    abstract protected function getClient(): OAuth2ClientInterface ;
 
    
 

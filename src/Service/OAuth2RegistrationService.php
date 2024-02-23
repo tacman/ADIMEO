@@ -30,6 +30,7 @@ class OAuth2RegistrationService
      */
     public function saveUser(ResourceOwnerInterface $resourceOwner): User
     {
+        dd("Inscription") ;
 
         $user = match (true){
 
@@ -57,7 +58,8 @@ class OAuth2RegistrationService
         } ;
      
         $this->userRepository->save($user, flush: true);
-
+        
+        dd($user) ;
         return $user ;
     }
 

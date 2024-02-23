@@ -7,8 +7,8 @@ use App\Repository\UserRepository;
 use App\Security\AbstractOAuth2Authenticator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use League\OAuth2\Client\Provider\FacebookUser;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use League\OAuth2\Client\Provider\GithubResourceOwner;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
@@ -16,9 +16,9 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 
-class GithubAuthenticator extends AbstractOAuth2Authenticator
-{
-    protected string $serviceName = "github" ;
+class FacebookAuthenticator extends AbstractOAuth2Authenticator
+{   
+    protected string $serviceName = "facebook" ;
 
     public function __construct(
         private readonly ClientRegistry $clientRegistry ,
@@ -31,21 +31,29 @@ class GithubAuthenticator extends AbstractOAuth2Authenticator
         return $this->clientRegistry->getClient( $this->serviceName ) ;
     }
 
-
+    /**
+     * Cette fonction obtient les identifiants d'authentification de la requête 
+     * et renvoie un user, 
+     * 
+     * @param ResourceOwnerInterface $resourceOwner
+     * @param UserRepository $userRepository
+     * 
+     * @return User
+     */
     protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner): ?User
     {
-        if( !($resourceOwner instanceof GithubResourceOwner ) ){
+        if( !($resourceOwner instanceof FacebookUser ) ){
             throw new \RuntimeException("expecting github user", 1);
         }
 
-        // if( true ==! ($resourceOwner->toArray()['email_verify']) ?? null ){
-        //     throw new AuthenticationException(" L'email n'a pas été confirmé.") ;
-        // }
+        dd($resourceOwner);
 
         $existingUser = $this->userRepository->findOneBy([
-            'gitHubId' => $resourceOwner->getId() ,
+            'fbId' => $resourceOwner->getId() ,
             'email'    => $resourceOwner->getEmail()
         ]);
+
+        dd("existingUser") ;
 
         return $existingUser ;
     }
