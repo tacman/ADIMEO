@@ -10,13 +10,15 @@ use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\FacebookUser;
 use League\OAuth2\Client\Provider\GithubResourceOwner;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 class OAuth2RegistrationService
 {
     public function __construct(
         private EntityManagerInterface $entityManager, 
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
+        private UserPasswordHasherInterface $hasher 
     ){
     }
 
@@ -27,40 +29,36 @@ class OAuth2RegistrationService
      */
     public function saveUser(ResourceOwnerInterface $resourceOwner): User
     {
-        dd($resourceOwner->getId()) ;
-
         $user = match (true){
 
             $resourceOwner instanceof GoogleUser => ( new User() )
-                ->setNom( $resourceOwner->getEmail() )
-                ->setPrenom( $resourceOwner->getEmail() )
+                ->setNom( $resourceOwner->getLastName() )
+                ->setPrenom( $resourceOwner->getFirstName() )
                 ->setEmail( $resourceOwner->getEmail() )
-                ->setGoogleId( $resourceOwner->getId() )
-                ->setDone(true)
-                ->setCreatedAt(new \DateTimeImmutable() )
-                ->setUpdatedAt(new \DateTimeImmutable() )
-                ->setRoles(['ROLE_USER']) ,
+                ->setGoogleId( $resourceOwner->getId() ) ,
             $resourceOwner instanceof GithubResourceOwner => ( new User() )
+                ->setNom( $resourceOwner->getName() )
+                ->setPrenom( $resourceOwner->getNickname() )
                 ->setEmail( $resourceOwner->getEmail() )
-                ->setGitHubId( $resourceOwner->getId() )
-                ->setDone(true)
-                ->setCreatedAt(new \DateTimeImmutable() )
-                ->setUpdatedAt(new \DateTimeImmutable() )
-                ->setRoles(['ROLE_USER']) ,
+                ->setGitHubId( $resourceOwner->getId() ) ,
             $resourceOwner instanceof FacebookUser => ( new User() )
                 ->setNom( $resourceOwner->getLastName() )
                 ->setPrenom( $resourceOwner->getFirstName() )
                 ->setEmail( $resourceOwner->getEmail() )
-                ->setFbId( $resourceOwner->getId() )
-                ->setDone(true)
-                ->setCreatedAt(new \DateTimeImmutable() )
-                ->setUpdatedAt(new \DateTimeImmutable() )
-                ->setRoles(['ROLE_USER']) 
+                ->setFbId( $resourceOwner->getId() ) 
         } ;
+
+        $user
+            ->setDone(true)
+            ->setCreatedAt(new \DateTimeImmutable() )
+            ->setUpdatedAt(new \DateTimeImmutable() )
+            ->setRoles(['ROLE_USER'])
+            ->setPassword(
+                $this->hasher->hashPassword( $user, "azerty" )
+            ) ;
      
         $this->userRepository->save($user, flush: true);
-        
-        dd($user) ;
+
         return $user ;
     }
 

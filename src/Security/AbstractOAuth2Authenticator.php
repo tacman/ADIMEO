@@ -120,9 +120,9 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
    
         if( null === $user){
             $user = $this->oAuth2RegistrationService->saveUser($resourceOwnerProvider);
-            dd($user);
+           // dd($user);
         }
-        dd('dd');
+
         return new SelfValidatingPassport(
             userBadge:  new UserBadge( $user->getUserIdentifier(), fn () => $user)  ,
             badges : [
