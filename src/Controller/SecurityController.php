@@ -43,7 +43,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/oauth/connect/service/{service}', name: 'app_oauth_login',  methods:['GET'])]
-    public function connect(Request $request, string $service, ClientRegistry $clientRegistry): RedirectResponse
+    public function connect( string $service, ClientRegistry $clientRegistry ): RedirectResponse
     {
         if ( !in_array($service, array_keys(self::SCOPES), TRUE) )
         {
@@ -53,7 +53,7 @@ class SecurityController extends AbstractController
         // $clientRegistry = $this->get('knpu.oauth2.registry'); 
         return $clientRegistry
             ->getClient($service) // the name use in config/packages/knpu_oauth2_client.yaml 
-            ->redirect( self::SCOPES[$service], []) ;  // 'public_profile', 'email' ,  the scopes you want to access
+            ->redirect( self::SCOPES[$service], [] ) ;  // 'public_profile', 'email' ,  the scopes you want to access
     }
 
     #[Route('/oauth/check/{service}', name: 'auth_oauth_check',  methods:['GET','POST'])]
