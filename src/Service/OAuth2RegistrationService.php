@@ -34,21 +34,19 @@ class OAuth2RegistrationService
             $resourceOwner instanceof GoogleUser => ( new User() )
                 ->setNom( $resourceOwner->getLastName() )
                 ->setPrenom( $resourceOwner->getFirstName() )
-                ->setEmail( $resourceOwner->getEmail() )
                 ->setGoogleId( $resourceOwner->getId() ) ,
             $resourceOwner instanceof GithubResourceOwner => ( new User() )
                 ->setNom( $resourceOwner->getName() )
                 ->setPrenom( $resourceOwner->getNickname() )
-                ->setEmail( $resourceOwner->getEmail() )
                 ->setGitHubId( $resourceOwner->getId() ) ,
             $resourceOwner instanceof FacebookUser => ( new User() )
                 ->setNom( $resourceOwner->getLastName() )
                 ->setPrenom( $resourceOwner->getFirstName() )
-                ->setEmail( $resourceOwner->getEmail() )
                 ->setFbId( $resourceOwner->getId() ) 
         } ;
 
         $user
+            ->setEmail( $resourceOwner->getEmail() )
             ->setDone(true)
             ->setCreatedAt(new \DateTimeImmutable() )
             ->setUpdatedAt(new \DateTimeImmutable() )
