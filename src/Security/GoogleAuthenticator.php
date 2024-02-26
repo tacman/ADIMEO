@@ -20,11 +20,6 @@ class GoogleAuthenticator extends AbstractOAuth2Authenticator
 {
     protected string $serviceName = "google" ;
 
-    protected function getClient(): OAuth2ClientInterface
-    {
-        return $this->clientRegistry->getClient( $this->serviceName ) ;
-    }
-   
     protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner): ?User
     {
         if( !($resourceOwner instanceof GoogleUser ) ){
