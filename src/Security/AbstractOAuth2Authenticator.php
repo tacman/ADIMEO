@@ -43,9 +43,12 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
     }
 
     abstract protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner): ?User ;
-    abstract protected function getClient(): OAuth2ClientInterface ;
-
     
+    protected function getClient(): OAuth2ClientInterface
+    {
+        return $this->clientRegistry->getClient( $this->serviceName ) ;
+    }
+
     /**
      * Cette fonction indique si l'authentificateur prend en charge la requête donnée
      * Elle doit renvoyer une valeur booléenne

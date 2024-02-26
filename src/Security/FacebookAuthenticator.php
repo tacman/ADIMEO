@@ -20,10 +20,6 @@ class FacebookAuthenticator extends AbstractOAuth2Authenticator
 {   
     protected string $serviceName = "facebook" ;
 
-    protected function getClient(): OAuth2ClientInterface
-    {
-        return $this->clientRegistry->getClient( $this->serviceName ) ;
-    }
 
     /**
      * Cette fonction obtient les identifiants d'authentification de la requête 

@@ -20,12 +20,6 @@ class GithubAuthenticator extends AbstractOAuth2Authenticator
 {
     protected string $serviceName = "github" ;
 
-    protected function getClient(): OAuth2ClientInterface
-    {
-        return $this->clientRegistry->getClient( $this->serviceName ) ;
-    }
-
-
     protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner): ?User
     {
         if( !($resourceOwner instanceof GithubResourceOwner ) ){
