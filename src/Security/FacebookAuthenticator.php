@@ -20,7 +20,6 @@ class FacebookAuthenticator extends AbstractOAuth2Authenticator
 {   
     protected string $serviceName = "facebook" ;
 
-
     /**
      * Cette fonction obtient les identifiants d'authentification de la requête 
      * et renvoie un user, 

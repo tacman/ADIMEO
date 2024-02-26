@@ -16,7 +16,7 @@ class SecurityController extends AbstractController
 {
     public const SCOPES = [
         'google' => [],
-        'github' => [],
+        'github' => ['user','user:email','repo'],
         'facebook' => ['public_profile', 'email'],
     ];
 

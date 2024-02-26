@@ -26,9 +26,7 @@ class GithubAuthenticator extends AbstractOAuth2Authenticator
             throw new \RuntimeException("expecting github user", 1);
         }
 
-        // if( true ==! ($resourceOwner->toArray()['email_verify']) ?? null ){
-        //     throw new AuthenticationException(" L'email n'a pas été confirmé.") ;
-        // }
+        // dd($resourceOwner);
 
         $existingUser = $userRepository->findOneBy([
             'gitHubId' => $resourceOwner->getId() ,
