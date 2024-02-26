@@ -4,7 +4,6 @@ namespace App\Security;
 
 use App\Entity\User; 
 use App\Repository\UserRepository;
-use App\Service\MessageGeneratorService;
 use App\Service\OAuth2RegistrationService;
 use League\OAuth2\Client\Token\AccessToken;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -38,7 +37,6 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
         protected RouterInterface  $router,
         protected UserRepository  $userRepository ,
         protected OAuth2RegistrationService $oAuth2RegistrationService,
-        protected MessageGeneratorService $testService
     )
     {
        
