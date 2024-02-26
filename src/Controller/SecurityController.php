@@ -59,11 +59,7 @@ class SecurityController extends AbstractController
     #[Route('/oauth/check/{service}', name: 'auth_oauth_check',  methods:['GET','POST'])]
     public function connectCheckAction( Request $request, ClientRegistry $clientRegistry): Response
     {
-       // $service =  $request->attributes->all()['service'];
-       $service = $request->get(key: 'service') ;
-       
-       dd('test') ;
-       dd($service) ;
+        $service =  $request->attributes->all()['service'];
        
         if ( !in_array($service, array_keys(self::SCOPES), TRUE) )
         {
