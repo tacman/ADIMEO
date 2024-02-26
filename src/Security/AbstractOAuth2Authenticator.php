@@ -42,7 +42,7 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
        
     }
 
-    abstract protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner): ?User ;
+    abstract protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner,  UserRepository  $userRepository): ?User ;
     
     protected function getClient(): OAuth2ClientInterface
     {
@@ -117,7 +117,7 @@ abstract class AbstractOAuth2Authenticator extends OAuth2Authenticator {
         $resourceOwnerProvider = $this->getResourceOwnerFromAccessToken($accessToken) ;
       
         //dd($resourceOwnerProvider) ;
-        $user = $this->getUserFromRessourceProvider($resourceOwnerProvider) ; // google, github, facebook
+        $user = $this->getUserFromRessourceProvider($resourceOwnerProvider,  $this->userRepository) ; // google, github, facebook
    
         if( null === $user){
             $user = $this->oAuth2RegistrationService->saveUser($resourceOwnerProvider);

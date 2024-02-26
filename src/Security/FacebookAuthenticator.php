@@ -29,13 +29,13 @@ class FacebookAuthenticator extends AbstractOAuth2Authenticator
      * 
      * @return ?User
      */
-    protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner): ?User
+    protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner, UserRepository  $userRepository): ?User
     {
         if( !($resourceOwner instanceof FacebookUser ) ){
-            throw new \RuntimeException("expecting github user", 1);
+            throw new \RuntimeException("expecting facebook user", 1);
         }
 
-        $existingUser = $this->userRepository->findOneBy([
+        $existingUser = $userRepository->findOneBy([
             'fbId' => $resourceOwner->getId() ,
             'email'    => $resourceOwner->getEmail()
         ]);

@@ -20,7 +20,7 @@ class GithubAuthenticator extends AbstractOAuth2Authenticator
 {
     protected string $serviceName = "github" ;
 
-    protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner): ?User
+    protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner, UserRepository  $userRepository): ?User
     {
         if( !($resourceOwner instanceof GithubResourceOwner ) ){
             throw new \RuntimeException("expecting github user", 1);
@@ -30,7 +30,7 @@ class GithubAuthenticator extends AbstractOAuth2Authenticator
         //     throw new AuthenticationException(" L'email n'a pas été confirmé.") ;
         // }
 
-        $existingUser = $this->userRepository->findOneBy([
+        $existingUser = $userRepository->findOneBy([
             'gitHubId' => $resourceOwner->getId() ,
             'email'    => $resourceOwner->getEmail()
         ]);

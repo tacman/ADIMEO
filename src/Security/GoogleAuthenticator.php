@@ -20,7 +20,7 @@ class GoogleAuthenticator extends AbstractOAuth2Authenticator
 {
     protected string $serviceName = "google" ;
 
-    protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner): ?User
+    protected function getUserFromRessourceProvider(ResourceOwnerInterface $resourceOwner, UserRepository  $userRepository): ?User
     {
         if( !($resourceOwner instanceof GoogleUser ) ){
             throw new \RuntimeException("expecting google user", 1);
@@ -31,7 +31,7 @@ class GoogleAuthenticator extends AbstractOAuth2Authenticator
             throw new AuthenticationException(" L'email n'a pas été confirmé.") ;
         }
 
-        $existingUser = $this->userRepository->findOneBy([
+        $existingUser = $userRepository->findOneBy([
             'googleId' => $resourceOwner->getId() ,
             'email'    => $resourceOwner->getEmail()
         ]);
