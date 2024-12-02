@@ -41,10 +41,24 @@ class UsersFixtures extends Fixture implements FixtureGroupInterface
             )
         ;
 
-        $manager->persist($admin); 
+        $manager->persist($admin);
+
+        $admin
+            ->setNom( "Tac" )
+            ->setPrenom( "T" )
+            ->setPhone( $this->faker->phoneNumber() )
+            ->setEmail( "tacman@gmail.com" )
+            ->setRoles(['ROLE_ADMIN'])
+            ->setDone(true)
+            ->setPassword(
+                $this->hasher->hashPassword( $admin, "tt" )
+            )
+        ;
+
+        $manager->persist($admin);
 
         // All users
-        for ( $i=1; $i < 15; $i++ ) { 
+        for ( $i=1; $i < 15; $i++ ) {
             $user = new User();
 
             $user
@@ -59,7 +73,7 @@ class UsersFixtures extends Fixture implements FixtureGroupInterface
                 )
             ;
 
-            $manager->persist($user); 
+            $manager->persist($user);
         }
 
         $manager->flush();
@@ -69,5 +83,5 @@ class UsersFixtures extends Fixture implements FixtureGroupInterface
     {
         return ['users'];
     }
-    
+
 }
